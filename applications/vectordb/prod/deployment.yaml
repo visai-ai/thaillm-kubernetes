@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-vectordb
+spec:
+  replicas: 1
+  template:
+    spec:
+      nodeName: prod-inf-61
+      containers:
+      - name: main
+        image: registry.gitlab.com/visai-ai/projects/bdi/application/fact-vector-db:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 41000
+        env:
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: prod-secret
+              key: VECTORDB_API_KEY
+        - name: HF_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: prod-secret
+              key: VECTORDB_HF_TOKEN
+        envFrom:
+        - configMapRef:
+            name: prod-vectordb-conf
+        resources:
+          requests:
+            memory: 8Gi
+            cpu: 2
+          limits:
+            nvidia.com/gpu: 1
+      tolerations:
+      - key: usage
+        operator: Equal
+        value: gpu
+        effect: NoSchedule
+      - name: dshm
+        emptyDir:
+          medium: Memory
+      - name: vectordb
+        persistentVolumeClaim:
+          claimName: prod-vectordb-pvc
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: prod-image-pull-secret

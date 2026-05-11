@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-backend
+spec:
+  type: ClusterIP
+  selector:
+    component: bdi
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-backend-siriraj
+spec:
+  type: ClusterIP
+  selector:
+    component: siriraj
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3001

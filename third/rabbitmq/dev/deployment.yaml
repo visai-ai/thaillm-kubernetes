@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-rabbitmq
+spec:
+  replicas: 1
+  template:
+    spec:
+      nodeName: dev-app-01
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:4.1.4-management
+        env:
+        - name: RABBITMQ_NODENAME
+          value: rabbitmq@localhost
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: RABBITMQ_USERNAME
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: RABBITMQ_PASSWORD
+        ports:
+        - containerPort: 5672
+          name: amqp
+        - containerPort: 15672
+          name: management
+        volumeMounts:
+        - name: volume
+          mountPath: /var/lib/rabbitmq
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      volumes:
+      - name: volume
+        persistentVolumeClaim:
+          claimName: dev-rabbitmq-pvc

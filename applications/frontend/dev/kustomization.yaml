@@ -1,0 +1,16 @@
+resources:
+- deployment.yaml
+- service.yaml
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: registry.gitlab.com/visai-ai/projects/bdi/application/frontend
+  newTag: bfe638deaeb0476905727af64061f2f43bdadde0
+- name: registry.gitlab.com/visai-ai/projects/bdi/application/frontend/siriraj
+  newTag: bfe638deaeb0476905727af64061f2f43bdadde0
+
+commonLabels:
+  app: dev-frontend
+
+namespace: chatbot

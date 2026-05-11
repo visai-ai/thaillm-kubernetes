@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-frontend
+spec:
+  type: ClusterIP
+  selector:
+    component: bdi
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-frontend-siriraj
+spec:
+  type: ClusterIP
+  selector:
+    component: siriraj
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000

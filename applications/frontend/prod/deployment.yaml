@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: bdi
+  template:
+    metadata:
+      labels:
+        component: bdi
+    spec:
+      nodeName: prod-app-01
+      containers:
+      - name: main
+        image: registry.gitlab.com/visai-ai/projects/bdi/application/frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: 400Mi
+            cpu: 1
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: prod-image-pull-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-frontend-siriraj
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: siriraj
+  template:
+    metadata:
+      labels:
+        component: siriraj
+    spec:
+      nodeName: prod-app-01
+      containers:
+      - name: main
+        image: registry.gitlab.com/visai-ai/projects/bdi/application/frontend/siriraj:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: 400Mi
+            cpu: 1
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: prod-image-pull-secret

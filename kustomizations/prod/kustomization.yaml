@@ -1,0 +1,26 @@
+resources:
+- namespace.yaml
+- ingress.yaml
+- storage.yaml
+- ../../secrets/prod
+- ../../applications/backend/prod
+- ../../applications/frontend/prod
+- ../../applications/vectordb/prod
+- ../../applications/prescreen-rulesets/prod
+- ../../third/rabbitmq/prod
+
+configMapGenerator:
+- name: prod-backend-conf
+  envs:
+  - backend.env
+- name: prod-backend-siriraj-conf
+  envs:
+  - backend-siriraj.env
+- name: prod-vectordb-conf
+  envs:
+  - vectordb.env
+- name: prod-prescreen-rulesets-conf
+  envs:
+  - prescreen-rulesets.env
+
+namespace: chatbot

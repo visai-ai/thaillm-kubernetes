@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-prescreen-rulesets
+spec:
+  replicas: 1
+  template:
+    spec:
+      nodeName: dev-app-01
+      containers:
+      - name: main
+        image: registry.gitlab.com/visai-ai/projects/bdi/application/prescreen-rulesets:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: PRESCREEN_RULESETS_DATABASE_URL
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: OPENAI_API_KEY
+        - name: HF_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: PRESCREEN_RULESETS_HF_TOKEN
+        - name: PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: POSTGRES_PASSWORD
+        envFrom:
+        - configMapRef:
+            name: dev-prescreen-rulesets-conf
+        resources:
+          requests:
+            memory: 4Gi
+            cpu: 2
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: dev-image-pull-secret

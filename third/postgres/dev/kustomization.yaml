@@ -1,0 +1,13 @@
+resources:
+- namespace.yaml
+- service.yaml
+- statefulset.yaml
+- storage.yaml
+namespace: chatbot
+commonLabels:
+  app: postgres
+
+secretGenerator:
+- envs:
+  - postgres.env
+  name: dev-pg-secret

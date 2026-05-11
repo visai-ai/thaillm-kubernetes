@@ -1,0 +1,10 @@
+resources:
+- deployment.yaml
+# - namespace.yaml
+- service.yaml
+- storage.yaml
+commonLabels:
+  app: dev-rabbitmq
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: chatbot

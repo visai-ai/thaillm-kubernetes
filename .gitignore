@@ -1,0 +1,5 @@
+.env
+
+# macOS stuff
+.DS
+.DS_store

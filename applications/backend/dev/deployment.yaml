@@ -1,0 +1,249 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-backend
+  labels:
+    component: bdi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: bdi
+  template:
+    metadata:
+      labels:
+        component: bdi
+    spec:
+      nodeName: dev-app-01
+      containers:
+      - name: main
+        image: registry.gitlab.com/visai-ai/projects/bdi/application/backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3001
+        env:
+        - name: ARENA_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: ARENA_ENCRYPTION_KEY
+        - name: BETTER_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: BETTER_AUTH_SECRET
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: DATABASE_URL
+        - name: INTERNAL_AI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: INTERNAL_AI_API_KEY
+        - name: LLM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_API_KEY
+        - name: LLM_ARENA_1_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_1_API_KEY
+        - name: LLM_ARENA_2_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_2_API_KEY
+        - name: LLM_ARENA_3_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_3_API_KEY
+        - name: LLM_ARENA_4_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_4_API_KEY
+        - name: LLM_ARENA_5_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_5_API_KEY
+        - name: MEDICAL_FACTS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: MEDICAL_FACTS_API_KEY
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: POSTGRES_PASSWORD
+        - name: SMTP_USER
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: SMTP_USER
+        - name: SMTP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: SMTP_PASS
+        - name: RABBITMQ_URL
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: RABBITMQ_URL
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: GOOGLE_CLIENT_ID
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: GOOGLE_CLIENT_SECRET
+        - name: VAPID_KEYS_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: VAPID_KEYS_PRIVATE_KEY
+        envFrom:
+        - configMapRef:
+            name: dev-backend-conf
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 2
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: dev-image-pull-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-backend-siriraj
+  labels:
+    component: siriraj
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: siriraj
+  template:
+    metadata:
+      labels:
+        component: siriraj
+    spec:
+      nodeName: dev-app-01
+      containers:
+      - name: main
+        image: registry.gitlab.com/visai-ai/projects/bdi/application/backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3001
+        env:
+        - name: ARENA_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: ARENA_ENCRYPTION_KEY
+        - name: BETTER_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: BETTER_AUTH_SECRET
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: DATABASE_URL
+        - name: INTERNAL_AI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: INTERNAL_AI_API_KEY
+        - name: LLM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_API_KEY
+        - name: LLM_ARENA_1_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_1_API_KEY
+        - name: LLM_ARENA_2_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_2_API_KEY
+        - name: LLM_ARENA_3_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_3_API_KEY
+        - name: LLM_ARENA_4_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_4_API_KEY
+        - name: LLM_ARENA_5_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: LLM_ARENA_5_API_KEY
+        - name: MEDICAL_FACTS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: MEDICAL_FACTS_API_KEY
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: POSTGRES_PASSWORD
+        - name: SMTP_USER
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: SMTP_USER
+        - name: SMTP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: SMTP_PASS
+        - name: RABBITMQ_URL
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: RABBITMQ_URL
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: GOOGLE_CLIENT_ID
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: GOOGLE_CLIENT_SECRET
+        - name: VAPID_KEYS_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret
+              key: VAPID_KEYS_PRIVATE_KEY
+        envFrom:
+        - configMapRef:
+            name: dev-backend-siriraj-conf
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 2
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: dev-image-pull-secret

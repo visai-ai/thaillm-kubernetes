@@ -1,0 +1,83 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dev-frontend
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://thaillm.or.th, http://localhost:3000, http://localhost:5173"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization, Origin, Keep-Alive, User-Agent, X-CustomHeader, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Accept, x-api-key"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-body-size: 10g
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - 'thaillm.or.th'
+    - '*.thaillm.or.th'
+    secretName: thaillm-tls
+  rules:
+  - host: thaillm.or.th
+    http:
+      paths:
+      - path: /dev-medical
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-frontend
+            port:
+              number: 80
+      - path: /dev-medical-siriraj
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-frontend-siriraj
+            port:
+              number: 80
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dev-backend
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://thaillm.or.th, http://localhost:3000, http://localhost:5173"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization, Origin, Keep-Alive, User-Agent, X-CustomHeader, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Accept, x-api-key"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-body-size: 10g
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+    # nginx.ingress.kubernetes.io/use-regex: 'true'
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - 'thaillm.or.th'
+    - '*.thaillm.or.th'
+    secretName: thaillm-tls
+  rules:
+  - host: thaillm.or.th
+    http:
+      paths:
+      - path: /dev-medical-api
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-backend
+            port:
+              number: 80
+      - path: /dev-medical-siriraj-api
+        pathType: Prefix
+        backend:
+          service:
+            name: dev-backend-siriraj
+            port:
+              number: 80
