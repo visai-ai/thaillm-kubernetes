@@ -1,1 +1,1 @@
-# BDI Kubernetes
+# ThaiLLM Healthcare Chatbot Cluster
